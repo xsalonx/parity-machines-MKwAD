@@ -66,11 +66,11 @@ class ParityMachine(ABC):
         pass
 
     @abstractmethod
-    def synchronized(self):
+    def sync_level(self):
         """
-        Checks if the parity machines are synchronized.
+        Returns the synchronization level of the parity machine.
 
-        :return: `True` if synchronized, `False` otherwise
+        :return: Synchronization level
         """
 
         pass
