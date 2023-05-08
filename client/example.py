@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     count = 0
 
-    while not (ppm1.synchronized() and ppm2.synchronized()):
+    while not (ppm1.sync_level() == 1 and ppm2.sync_level() == 1):
         x, pi = ppm1.generate_input()
 
         tau1, tau2, tauEve = ppm1(x, pi), ppm2(x, pi), eve(x, pi)

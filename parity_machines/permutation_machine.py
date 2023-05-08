@@ -115,14 +115,17 @@ class PermutationMachine(ParityMachine):
 
         return key.to_bytes(math.ceil(self.g / 8), byteorder='big')
 
-    def synchronized(self):
+    def sync_level(self):
         """
-        Returns whether the two parity machines are synchronized.
+        Returns the synchronization level of the parity machine.
         Synchronization is achieved when the buffer is filled and
         the counter is greater than or equal to the buffer size which
         means that the last `g` outputs of both networks were equal.
 
-        :return: True if the two parity machines are synchronized, False otherwise
+        :return: Synchronization level
         """
 
-        return self.buffer_filled and self.counter >= self.g
+        if not self.buffer_filled:
+            return 0
+
+        return min(1, self.counter / self.g)
