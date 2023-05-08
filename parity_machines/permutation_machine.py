@@ -33,7 +33,7 @@ class PermutationMachine(ParityMachine):
         self.buffer_filled = False
         self.counter = 0
 
-    def __call__(self, x, pi):
+    def __call__(self, x):
         """
         The output of the hidden layer is the sum of XOR products of
         the input and the weights. Weight vector is created by
@@ -42,10 +42,11 @@ class PermutationMachine(ParityMachine):
         is greater than `n / 2` and 0 otherwise. The output of the
         network is the product of the outputs of the hidden layers.
 
-        :param x: Input vector
-        :param pi: Permutation vector
+        :param x: Input and permutation vector
         :return: Output of the parity machine
         """
+
+        x, pi = x
 
         W = self.s[pi].reshape(self.k, self.n)
         X = x.reshape(self.k, self.n)
