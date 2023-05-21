@@ -1,2 +1,3 @@
 from parity_machines.parity_machine import ParityMachine
 from parity_machines.permutation_machine import PermutationMachine
+from parity_machines.tree_machine import TreeParityMachine
