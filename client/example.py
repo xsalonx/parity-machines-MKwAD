@@ -2,7 +2,7 @@ from parity_machines import PermutationMachine
 
 
 if __name__ == '__main__':
-    k, n, g = 2, 30, 64
+    k, n, g = 2, 30, 256
 
     ppm1 = PermutationMachine(k, n, g)
     ppm2 = PermutationMachine(k, n, g)
@@ -11,9 +11,9 @@ if __name__ == '__main__':
     count = 0
 
     while not (ppm1.sync_level() == 1 and ppm2.sync_level() == 1):
-        x, pi = ppm1.generate_input()
+        x = ppm1.generate_input()
 
-        tau1, tau2, tauEve = ppm1(x, pi), ppm2(x, pi), eve(x, pi)
+        tau1, tau2, tauEve = ppm1(x), ppm2(x), eve(x)
         ppm1.update(tau2)
         ppm2.update(tau1)
 
