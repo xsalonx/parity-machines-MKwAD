@@ -2,9 +2,10 @@ import numpy as np
 from parity_machines import ParityMachine
 
 class TreeParityMachine(ParityMachine):
-    def __init__(self, N, K, L, seed=None):
-        super().__init__(K, N, seed=seed)
-        self.L = L
+    def __init__(self, n, k, l, update_rule='hebbian', seed=None):
+        super().__init__(k, n, seed=seed)
+        self.L = l
+        self.update_rule = update_rule
         np.random.seed(seed)
         self._r()
 
@@ -24,14 +25,14 @@ class TreeParityMachine(ParityMachine):
     def __call__(self, x):
         return self.forward(x)
 
-    def update(self, y_other, update_rule='hebian'):
+    def update(self, y_other):
         if (self.y == y_other):
             self.consecutive_updates += 1
-            if update_rule == 'hebbian':
+            if self.update_rule == 'hebbian':
                 self.hebbian(y_other)
-            elif update_rule == 'anti_hebbian':
+            elif self.update_rule == 'anti_hebbian':
                 self.anti_hebbian(y_other)
-            elif update_rule == 'random_walk':
+            elif self.update_rule == 'random_walk':
                 self.random_walk(y_other)
             else:
                 raise Exception("Invalid update rule. Valid update rules are: " + 
@@ -49,15 +50,8 @@ class TreeParityMachine(ParityMachine):
     def get_key(self):
         return self.W.tobytes()
     
-    def sync_level(self, keyother):
-        """
-        Very slow method
-        """
-        my_key = np.array(list(self.get_key()))
-        keyother = np.array(list(keyother))
-        if len(my_key) != len(keyother):
-            return 0
-        return (my_key == keyother).sum() / len(my_key)
+    def sync_level(self):
+        return self.consecutive_updates / (self.n * self.k + self.L)
             
     def hebbian(self, y_other):
         self.W += self.x * self.y * (self.sgn.reshape((-1, 1)) == self.y) * (self.y == y_other)
