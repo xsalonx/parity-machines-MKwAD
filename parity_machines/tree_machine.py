@@ -41,11 +41,11 @@ class TreeParityMachine(ParityMachine):
             self.consecutive_updates = 0	
 
     def synced(self):
-        self.consecutive_updates > self.n + self.k + self.L
+        return self.consecutive_updates > self.n + self.k + self.L
 
     def synced_p2(self):
         """Higher accuracy of syncronization than for mathod 'synced'"""
-        self.consecutive_updates > self.n * self.k + self.L
+        return self.consecutive_updates > self.n * self.k + self.L
             
     def get_key(self):
         return self.W.tobytes()
