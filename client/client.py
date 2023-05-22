@@ -1,5 +1,6 @@
 import pickle
 import socket
+import struct
 from argparse import ArgumentParser
 from tqdm import tqdm
 
@@ -11,6 +12,12 @@ parity_machine = {
         'k': 2,
         'n': 30,
         'g': 256
+    }), 
+    'tree': (TreeParityMachine, {
+        'k': 2,
+        'n': 60,
+        'l': 30,
+        'update_rule': 'hebbian'
     })
 }
 
@@ -33,7 +40,7 @@ def connect_socket(host, port):
 
 if __name__ == '__main__':
     args = ArgumentParser()
-    args.add_argument('--host', required=True, type=str)
+    args.add_argument('--host', required=False, type=str)
     args.add_argument('--port', required=True, type=int)
     args.add_argument('--type', required=True, type=str)
     args.add_argument('--first', action='store_true')
@@ -68,10 +75,10 @@ if __name__ == '__main__':
 
         # Compute tau and send it to the peer
         tau = pm(x).item()
-        s.send(tau.to_bytes(1, 'big'))
+        s.send(struct.pack("<i", tau))
 
         # Receive tau from the peer and update the machine
-        tau_peer = int.from_bytes(s.recv(1), 'big')
+        tau_peer = struct.unpack("<i", s.recv(4))
         pm.update(tau_peer)
 
         # Update the progress bar
