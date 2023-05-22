@@ -1,11 +1,13 @@
 import numpy as np
 from parity_machines import ParityMachine
+import hashlib
 
 class TreeParityMachine(ParityMachine):
-    def __init__(self, n, k, l, update_rule='hebbian', seed=None):
+    def __init__(self, n, k, l, update_rule='hebbian', key_bytes=32, seed=None):
         super().__init__(k, n, seed=seed)
         self.L = l
         self.update_rule = update_rule
+        self.key_bytes = key_bytes
         np.random.seed(seed)
         self._r()
 
@@ -48,7 +50,8 @@ class TreeParityMachine(ParityMachine):
         return self.consecutive_updates > self.n * self.k + self.L
             
     def get_key(self):
-        return self.W.tobytes()
+        wbytes = self.W.tobytes()
+        return hashlib.shake_256(wbytes).digest(length=self.key_bytes)
     
     def sync_level(self):
         return self.consecutive_updates / (self.n * self.k + self.L)

@@ -14,7 +14,7 @@ parity_machine = {
         'g': 256
     }), 
     'tree': (TreeParityMachine, {
-        'k': 20,
+        'k': 2,
         'n': 60,
         'l': 30,
         'update_rule': 'hebbian'
@@ -40,7 +40,7 @@ def connect_socket(host, port):
 
 if __name__ == '__main__':
     args = ArgumentParser()
-    args.add_argument('--host', required=True, type=str)
+    args.add_argument('--host', required=False, type=str)
     args.add_argument('--port', required=True, type=int)
     args.add_argument('--type', required=True, type=str)
     args.add_argument('--first', action='store_true')
