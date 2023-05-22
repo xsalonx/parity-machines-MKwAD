@@ -51,7 +51,7 @@ class TreeParityMachine(ParityMachine):
             
     def get_key(self):
         wbytes = self.W.tobytes()
-        return hashlib.shake_256(wbytes).digest(length=self.key_bytes)
+        return hashlib.shake_256(wbytes).digest(self.key_bytes)
     
     def sync_level(self):
         return self.consecutive_updates / (self.n * self.k + self.L)

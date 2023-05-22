@@ -2,6 +2,7 @@ import pickle
 import socket
 import struct
 from argparse import ArgumentParser
+
 from tqdm import tqdm
 
 from parity_machines import *
